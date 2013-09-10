@@ -1,4 +1,4 @@
-component output="false" accessors="true" extends="com.appmarkable.base.Service" {
+component output="false" {
 
 	public function init(){
 		return this;
@@ -6,7 +6,7 @@ component output="false" accessors="true" extends="com.appmarkable.base.Service"
 
 	package struct function doRequest(required string Endpoint, required string Resource, string Method="GET", string Body=""){
 		var httpSvc = new http();
-		var response = new Response();
+		var response = new SearchResponse();
 
 			httpSvc.setUrl(arguments.endpoint  & Arguments.Resource);
 			httpSvc.setMethod(Arguments.Method);

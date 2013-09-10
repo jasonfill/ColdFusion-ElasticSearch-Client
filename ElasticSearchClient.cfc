@@ -1,20 +1,31 @@
-component accessors="true" extends="com.elasticsearch.Base" {
+component accessors="true" extends="Base" {
 
-	property name="ElasticSearchUrl";
-	property name="ElasticSearchIndex";
-	property name="ElasticSearchDocType";
 	
 	property name="OutputUtil";
 	property name="LoggingUtil";
+	property name="ClusterManager" type="ClusterManager";
 
-	property name="ElasticSearchConfig";
-
-	public function init(){
+	public ElasticSearchClient function init(required ClusterManager ClusterManager){
+		variables.ClusterManager = arguments.ClusterManager;
 	 	return this;
 	}
 
-	public function filterBuilder(){
-		return new com.elasticsearch.filter.FilterBuilder();
+	public FilterBuilder function filterBuilder(){
+		return new search.filters.FilterBuilder();
+	}
+
+	public QueryBuilder function queryBuilder(){
+		return new search.queries.QueryBuilder();
+	}
+
+	public FacetBuilder function facetBuilder(){
+		return new search.facets.FacetBuilder();
+	}
+
+	public Search function prepareSearch(){
+		var search = new Search(argumentCollection=arguments);
+			search.setClusterManager(getClusterManager());
+		return search;
 	}
 
 	public function index(string required id, string required data ){
