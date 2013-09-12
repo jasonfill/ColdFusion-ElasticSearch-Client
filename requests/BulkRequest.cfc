@@ -27,9 +27,7 @@ component accessors="true" {
 
 	public BulkResponse function execute(){
 		// prior to sending the bulk request, if this is transactional, let's pull up the current state of all the docs that are going to be updated...
-		if(isTransactional()){
-			loadPreUpdateData();
-		}
+		if(isTransactional()){ loadPreUpdateData(); }
 		
 		var BulkUpdateResponse = getClusterManager().doRequest(resource = "/_bulk",
 												method="POST",
@@ -39,10 +37,9 @@ component accessors="true" {
 		// if this bulk request is transactional and their are failures...go through the rollback process...
 		if(isTransactional() && BulkUpdateResponse.hasFailures()){
 			var RollbackResponse = getClusterManager().doRequest(resource = "/_bulk",
-												method="POST",
-												body=getRollbackBody(BulkUpdateResponse),
-												responseType="BulkResponse");
-			// indicate the process failed...
+																 method="POST",
+																 body=getRollbackBody(BulkUpdateResponse),
+																 responseType="BulkResponse");
 			// TODO: add better error message output...
 			BulkUpdateResponse.setSuccess(false);
 		}

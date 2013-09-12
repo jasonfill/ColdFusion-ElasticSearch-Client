@@ -19,9 +19,9 @@ component accessors="true" {
 	public MultiGetResponse function execute(){
 
 		var MultiGetResponse = getClusterManager().doRequest(resource = "/_mget",
-												method="POST",
-												body=getBody(),
-												responseType="MultiGetResponse");
+															 method="POST",
+															 body=getBody(),
+															 responseType="MultiGetResponse");
 
 		return MultiGetResponse;
 	}
