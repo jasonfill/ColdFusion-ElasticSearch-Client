@@ -5,9 +5,38 @@ component accessors="true"{
 	property name="inactive" type="struct";
 	property name="ClusterName" type="string";
 
-	public ClusterManager function init(){
+	public ClusterManager function init(any nodeConfig=""){
 		variables.active = {};
 		variables.inactive = {};
+		loadConfigFromString(arguments.nodeConfig);
+		return this;
+	}
+
+	private ClusterManager function loadConfigFromString(required any nodeConfig){
+		/*
+			config = [{
+				host = "",
+				port = "",
+				path = "",
+				secure = "",
+				username = "",
+				password = ""
+			}]
+		*/
+		var config = "";
+		if(isSimpleValue(arguments.nodeConfig) && len(trim(arguments.nodeConfig))){
+			if(isJson(arguments.nodeConfig)){
+				config = deserializeJSON(arguments.NodeConfig);
+			}else{
+				throw(message="The node config passed to the ElasticSearch ClusterManager is not a valid JSON string.");
+			}
+		}else if(isArray(arguments.nodeConfig)){
+			config = arguments.nodeConfig;
+		}
+
+		for(var c=1; c<=arrayLen(config); c++){
+			addServer(new NodeConfig(argumentCollection=config[c]));
+		}
 		return this;
 	}
 
@@ -24,6 +53,26 @@ component accessors="true"{
 	
 	public string function getEndpoint(){
 		 return variables.active[listGetAt(variables.serverList.active, RandRange(1,listLen(variables.serverList.active)))].url();
+	}
+
+	public struct function doRequest(string Endpoint=getEndPoint(), required string Resource, string Method="GET", string Body="", string ResponseType="Response"){
+		var httpSvc = new http();
+		var response = createObject("component", "responses.#arguments.ResponseType#").init();
+			httpSvc.setUsername("smartermeasure");
+			httpSvc.setPassword("decade");
+			httpSvc.setUrl(arguments.endpoint  & Arguments.Resource);
+			httpSvc.setMethod(Arguments.Method);
+
+			if(len(trim(Arguments.Body))){
+				httpSvc.addParam(type="body",value=Arguments.Body); 
+			}
+
+		var sendResult = httpSvc.send().getPrefix();
+
+		response.handleResponse(sendResult);
+
+		return response;
+
 	}
 
 }

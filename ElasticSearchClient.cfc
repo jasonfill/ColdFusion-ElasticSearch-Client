@@ -1,12 +1,13 @@
 component accessors="true" extends="Base" {
 
 	
-	property name="OutputUtil";
+	property name="OutputUtils";
 	property name="LoggingUtil";
 	property name="ClusterManager" type="ClusterManager";
 
 	public ElasticSearchClient function init(required ClusterManager ClusterManager){
 		variables.ClusterManager = arguments.ClusterManager;
+		variables.OutputUtils = new OutputUtils();
 	 	return this;
 	}
 
@@ -27,6 +28,23 @@ component accessors="true" extends="Base" {
 			search.setClusterManager(getClusterManager());
 		return search;
 	}
+
+	public IndexRequest function prepareIndex(string index="", string type="", string id=""){
+		var index = new requests.IndexRequest(index=arguments.index, type=arguments.type, id=arguments.id, ClusterManager=getClusterManager());
+			index.setIndex(arguments.index);
+			index.setType(arguments.type);
+			index.setId(arguments.id);
+		return index;
+	}
+
+	public BulkRequest function prepareBulk(boolean Transactional=false){
+		return new requests.BulkRequest(Transactional=Arguments.Transactional, ClusterManager=getClusterManager(), OutputUtils=getOutputUtils(), ElasticSearchClient=this);
+	}
+
+	public MultiGetRequest function prepareMultiGet(){
+		return new requests.MultiGetRequest(ClusterManager=getClusterManager(), OutputUtils=getOutputUtils());
+	}
+
 
 	public function index(string required id, string required data ){
 		var httpSvc = new http();

@@ -1,4 +1,4 @@
-component accessors="true" extends="com.elasticsearch.Base" {
+component accessors="true" extends="Base" {
 
 	property name="ElasticSearchClient";
 
@@ -8,8 +8,8 @@ component accessors="true" extends="com.elasticsearch.Base" {
 	}
 
 	public function configure(any event){
-		buildSettings(arguments.event);
-		buildIndicies();
+		//buildSettings(arguments.event);
+		//buildIndicies();
 	}
 
 	private function buildIndicies(){
