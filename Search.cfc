@@ -77,9 +77,7 @@ component accessors="true" {
 				  method="POST",
 				  body=searchString());
 		
-		writeDump(results); abort;
-
-		return new SearchResponse();
+		return new responses.SearchResponse();
 	}
 
 	package struct function doRequest(required string Endpoint, required string Resource, string Method="GET", string Body=""){
