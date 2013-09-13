@@ -30,7 +30,7 @@ component accessors="true" extends="Base" {
 	}
 
 	public IndexRequest function prepareIndex(string index="", string type="", string id=""){
-		var index = new requests.IndexRequest(index=arguments.index, type=arguments.type, id=arguments.id, ClusterManager=getClusterManager());
+		var index = new requests.IndexRequest(ClusterManager=getClusterManager());
 			index.setIndex(arguments.index);
 			index.setType(arguments.type);
 			index.setId(arguments.id);
@@ -43,6 +43,14 @@ component accessors="true" extends="Base" {
 
 	public MultiGetRequest function prepareMultiGet(){
 		return new requests.MultiGetRequest(ClusterManager=getClusterManager(), OutputUtils=getOutputUtils());
+	}
+
+	public GetRequest function prepareGet(string index="", string type="_all", string id=""){
+		var get = new requests.GetRequest(ClusterManager=getClusterManager());
+		get.setIndex(arguments.index);
+		get.setType(arguments.type);
+		get.setId(arguments.id);
+		return get;
 	}
 
 

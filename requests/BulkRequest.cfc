@@ -26,6 +26,7 @@ component accessors="true" {
 	}
 
 	public BulkResponse function execute(){
+		var Response = "";
 		// prior to sending the bulk request, if this is transactional, let's pull up the current state of all the docs that are going to be updated...
 		if(isTransactional()){ loadPreUpdateData(); }
 		
@@ -36,14 +37,18 @@ component accessors="true" {
 		
 		// if this bulk request is transactional and their are failures...go through the rollback process...
 		if(isTransactional() && BulkUpdateResponse.hasFailures()){
+			//writeoutput(getRollbackBody(BulkUpdateResponse)); abort;
 			var RollbackResponse = getClusterManager().doRequest(resource = "/_bulk",
 																 method="POST",
 																 body=getRollbackBody(BulkUpdateResponse),
 																 responseType="BulkResponse");
 			// TODO: add better error message output...
-			BulkUpdateResponse.setSuccess(false);
+			RollbackResponse.setSuccess(false);
+			Response=RollbackResponse;
+		}else{
+			Response=BulkUpdateResponse;
 		}
-		return BulkUpdateResponse;
+		return Response;
 	}
 
 	private string function loadPreUpdateData(){
@@ -59,14 +64,16 @@ component accessors="true" {
 		var json = createObject("Java","java.lang.StringBuilder");
 		var successes = BulkResponse.getSuccesses();
 		var item = "";
+		//writeDump(getBulkItemPreUpdate());
+		//writeDump(successes); abort;
 		for(var i=1; i<=ArrayLen(successes); i++){
 			item=successes[i];
+			var GetResponse = getBulkItemPreUpdate().getDoc(index=item.getIndex(), type=item.getType(), id=item.getId());
 			// if this is the first version, we need to run a delete
-			if(item.getVersion() == 1){
-				json.append('{"delete":{"_index":"#item[i].getIndex()#","_type":"#item[i].getType()#","_id":"#item[i].getId()#"}}#chr(10)#');
+			if(item.getVersion() == 1 || !GetResponse.getExists()){
+				json.append('{"delete":{"_index":"#item.getIndex()#","_type":"#item.getType()#","_id":"#item.getId()#"}}#chr(10)#');
 			}else{
 				// we need to roll this document back to an earlier version...
-				var GetResponse = getBulkItemPreUpdate().getDoc(index=item.getIndex(), type=item.getType(), id=item.getId());
 				if(!isNull(GetResponse)){
 					json.append('{"index":{"_index":"#GetResponse.getIndex()#","_type":"#GetResponse.getType()#","_id":"#GetResponse.getId()#"}}#chr(10)#');
 					json.append('#GetResponse.sourceToString()##chr(10)#');

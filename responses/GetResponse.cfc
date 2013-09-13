@@ -5,7 +5,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 	property name="Id";
 	property name="Version";
 	property name="Source";
-	property name="Exists";
+	property name="Exists" type="boolean" default="true";
 	
 	public GetResponse function init(){
 		return this;
@@ -13,7 +13,8 @@ component extends="Response" accessors="true" implements="IResponse" {
 
 	public void function handleResponse(){
 		super.handleResponse(argumentCollection=arguments);
-		if(getSuccess()){
+
+		
 			if(structKeyExists(getBody(), "_index")){
 				setIndex(getBody()["_index"]);
 			}
@@ -26,9 +27,15 @@ component extends="Response" accessors="true" implements="IResponse" {
 			if(structKeyExists(getBody(), "_version")){
 				setVersion(getBody()["_version"]);
 			}
+			if(structKeyExists(getBody(), "exists")){
+				setExists(getBody()["exists"]);
+			}
+		if(getSuccess()){
 			if(structKeyExists(getBody(), "_source")){
 				setSource(getBody()["_source"]);
 			}
+		}else{
+			setExists(false);
 		}
 	}
 

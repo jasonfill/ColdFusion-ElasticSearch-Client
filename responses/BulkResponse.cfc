@@ -11,26 +11,36 @@ component extends="Response" accessors="true" implements="IResponse" {
 
 	public void function handleResponse(){
 		var IndexResponse = "";
+		var Container = "index";
 		super.handleResponse(argumentCollection=arguments);
-		
+
 		if(getSuccess()){
 			for(var i=1; i<=ArrayLen(getBody().items); i++){
+				
+				// TODO: we need to create UPDATE and DELETE responses so those can be used as needed.
 				IndexResponse = new IndexResponse();
-				IndexResponse.setId(getBody().items[i].index["_id"]);
-				IndexResponse.setIndex(getBody().items[i].index["_index"]);
-				IndexResponse.setType(getBody().items[i].index["_type"]);
 
-				if(structKeyExists(getBody().items[i].index, "error")){
-					IndexResponse.setError(getBody().items[i].index["error"]);
+				Container = listFirst(structKeyList(getBody().items[i]));
+
+				IndexResponse.setId(getBody().items[i][Container]["_id"]);
+				IndexResponse.setIndex(getBody().items[i][Container]["_index"]);
+				IndexResponse.setType(getBody().items[i][Container]["_type"]);
+				
+				if(structKeyExists(getBody().items[i][Container], "exists")){
+					IndexResponse.setExists(getBody().items[i][Container]["exists"]);
+				}
+				
+				if(structKeyExists(getBody().items[i][Container], "error")){
+					IndexResponse.setError(getBody().items[i][Container]["error"]);
 					IndexResponse.setSuccess(false);
 					IndexResponse.setOk(false);
 				}else{
-					IndexResponse.setOk(getBody().items[i].index["ok"]);
+					IndexResponse.setOk(getBody().items[i][Container]["ok"]);
 					IndexResponse.setSuccess(IndexResponse.getOk());
 				}
 
 				if(IndexResponse.getSuccess()){
-					IndexResponse.setVersion(getBody().items[i].index["_version"]);
+					IndexResponse.setVersion(getBody().items[i][Container]["_version"]);
 					arrayAppend(getSuccesses(), IndexResponse);
 				}else{
 					arrayAppend(getFailures(), IndexResponse);
