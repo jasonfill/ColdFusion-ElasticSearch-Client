@@ -77,6 +77,7 @@ Getting Started
 						.execute();
 
 // Example Boolean Search
+	qb = es.queryBuilder();
 	Query = qb.BoolQuery()
 				.mustNot(qb.rangeQuery("age")
 							.from(10)

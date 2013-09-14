@@ -17,7 +17,7 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public Search function init(){
+	public SearchRequest function init(){
 		variables.Types = [];
 		variables.Indexes = [];
 		
@@ -27,14 +27,14 @@ component accessors="true" {
 		return this;
 	}
 
-	public Search function setTypes(){
+	public SearchRequest function setTypes(){
 		for(var i IN arguments){
 			arrayAppend(variables.Types, Arguments[i]);
 		}
 		return this;
 	}
 
-	public Search function setSearchType(required string SearchType){
+	public SearchRequest function setSearchType(required string SearchType){
 		if(listFindNoCase(this.SEARCH_TYPES, arguments.SearchType)){
 			variables.SearchType = arguments.SearchType;
 		}else{
@@ -69,42 +69,13 @@ component accessors="true" {
 
 
 	public SearchResponse function execute(){
-		
-		writeDump(searchString());abort;
 
-		results = doRequest(endpoint=getClusterManager().getEndPoint(),
-				  resource = "/_search",
-				  method="POST",
-				  body=searchString());
-		
-		return new responses.SearchResponse();
+		var resource = "_search?search_type=" & getSearchType();
+
+		return getClusterManager().doRequest(endpoint=getClusterManager().getEndPoint(),
+											  resource = resource,
+											  method="POST",
+											  body=searchString(),
+											  responseType="SearchResponse");
 	}
-
-	package struct function doRequest(required string Endpoint, required string Resource, string Method="GET", string Body=""){
-		var httpSvc = new http();
-		var response = new SearchResponse();
-			httpSvc.setUsername("smartermeasure");
-			httpSvc.setPassword("decade");
-			httpSvc.setUrl(arguments.endpoint  & Arguments.Resource);
-			httpSvc.setMethod(Arguments.Method);
-
-			if(len(trim(Arguments.Body))){
-				httpSvc.addParam(type="body",value=Arguments.Body); 
-			}
-
-		var sendResult = httpSvc.send().getPrefix();
-		writeDump(sendResult); abort;
-		response.setStatusCode(sendResult.status_code);
-		response.setStatus(sendResult.StatusCode);
-		response.setBody(deserializeJSON(sendResult.FileContent));
-		response.setHeader(sendResult.responseHeader);
-
-		if(response.getStatusCode() == "200"){
-			response.setSuccess(true);
-		}
-
-		return response;
-
-	}
-
 }
