@@ -58,8 +58,13 @@ component accessors="true"{
 	public struct function doRequest(string Endpoint=getEndPoint(), required string Resource, string Method="GET", string Body="", string ResponseType="Response"){
 		var httpSvc = new http();
 		var response = createObject("component", "responses.#arguments.ResponseType#").init();
-			httpSvc.setUsername("smartermeasure");
-			httpSvc.setPassword("decade");
+
+			if(find("@", arguments.endpoint)){
+				var basicAuth = listLast(listFirst(arguments.endpoint, "@"), "/");
+				httpSvc.setUsername(listFirst(basicAuth, ":"));
+				httpSvc.setPassword(listLast(basicAuth, ":"));
+			}
+
 			httpSvc.setUrl(arguments.endpoint  & Arguments.Resource);
 			httpSvc.setMethod(Arguments.Method);
 

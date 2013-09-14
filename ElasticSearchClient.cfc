@@ -23,8 +23,8 @@ component accessors="true" extends="Base" {
 		return new search.facets.FacetBuilder();
 	}
 
-	public Search function prepareSearch(){
-		var search = new Search(argumentCollection=arguments);
+	public SearchRequest function prepareSearch(){
+		var search = new requests.SearchRequest(argumentCollection=arguments);
 			search.setClusterManager(getClusterManager());
 		return search;
 	}
