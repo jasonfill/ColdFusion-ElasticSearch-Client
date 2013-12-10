@@ -35,12 +35,12 @@ component accessors="true"{
 		}
 
 		for(var c=1; c<=arrayLen(config); c++){
-			addServer(new NodeConfig(argumentCollection=config[c]));
+			addNode(new NodeConfig(argumentCollection=config[c]));
 		}
 		return this;
 	}
 
-	public ClusterManager function addServer(required NodeConfig NodeConfig){
+	public ClusterManager function addNode(required NodeConfig NodeConfig){
 		variables.active[arguments.NodeConfig.getServerId()] = arguments.NodeConfig;
 		updateServerList();
 		return this;

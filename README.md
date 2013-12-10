@@ -61,7 +61,7 @@ Getting Started
 // Cluster Connection
 	// allows for connecting to multiple clusters.
 
-	ClusterManager = new ClusterManager();
+	ClusterManager = new ClusterManager()
 							.addNode(new lib.NodeConfig(host="Node1", port="9200", secure=true))
 							.addNode(new lib.NodeConfig(host="Node2", port="9200", secure=true))
 
