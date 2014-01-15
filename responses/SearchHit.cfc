@@ -5,6 +5,7 @@ component accessors="true"{
 	property name="Score" type="numeric";
 	property name="Type" type="string";
 	property name="Source" type="struct";
+	property name="Highlight" type="struct";
 	
 	public SearchHit function init(){
 		return this;

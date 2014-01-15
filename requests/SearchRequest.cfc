@@ -9,7 +9,8 @@ component accessors="true" {
 	property name="Types" type="array";
 	property name="SearchType" type="string" default="query_then_fetch";
 	property name="Query" type="IQuery";
-	property name="Filter" type="FilterBuilder";
+	property name="Filters" type="array";
+	property name="Modifiers" type="array";
 	property name="Facet" type="FacetBuilder";
 	property name="From" type="numeric";
 	property name="Size" type="numeric";
@@ -20,6 +21,8 @@ component accessors="true" {
 	public SearchRequest function init(){
 		variables.Types = [];
 		variables.Indexes = [];
+		variables.Filters = [];
+		variables.Modifiers = [];
 		
 		for(var i IN arguments){
 			arrayAppend(variables.Indexes, Arguments[i]);
@@ -46,20 +49,31 @@ component accessors="true" {
 	public string function searchString(){
 		var json = '';
 
-		if(!isNull(getFilter())){
-			json = '{"filtered":{';
-		}
 
 		if(!isNull(getQuery())){
-			json = json & '{"query":{#getQuery().toString()#}';
+			json &= '{';
+			if(!isNull(getFrom()) && !isNull(getSize()))
+				json &= '"from": #getFrom()#, "size": #getSize()#,';
+			
+			json = json & '"query":{#getQuery().toString()#}';
 		}
 
-		if(!isNull(getFilter())){
-			json = json & '{"filter":{#getFilter().toString()#}';
+	
+		if(ArrayLen(getFilters()) > 0){
+			json = json & (ArrayLen(getFilters()) > 1 ?  ',"filter":{"and":[' : ',"filter":');
+			var filterJson = "";
+			for(var filter in getFilters()){
+				var filterString = filter.toString();
+				if(Len(filterString))
+					filterJson = ListAppend(filterJson, '{#filterString#}');
+			}
+			json = json & filterJson & (ArrayLen(getFilters()) > 1 ?  ']}' : '');
 		}
-
-		if(!isNull(getFilter())){
-			json = json & '}';
+		
+		if(ArrayLen(getModifiers()) > 0){
+			for(var modifier in getModifiers()){
+				json = ListAppend(json, modifier.toString());
+			}
 		}
 
 		json = json & '}';
@@ -69,8 +83,10 @@ component accessors="true" {
 
 
 	public SearchResponse function execute(){
-
-		var resource = "_search?search_type=" & getSearchType();
+		var urlIndexes = Len(getIndexes()[1]) > 0 ? ArrayToList(getIndexes()) & "/" : "";
+		var urlTypes = Len(getTypes()[1]) > 0 ? ArrayToList(getTypes()) & "/" : "";
+		
+		var resource = urlIndexes & urlTypes & "_search?search_type=" & getSearchType();
 
 		return getClusterManager().doRequest(endpoint=getClusterManager().getEndPoint(),
 											  resource = resource,

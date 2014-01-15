@@ -18,5 +18,4 @@ component accessors="true" extends="BaseQuery" implements="IQuery"{
 		json = json & '}';
 		return json;
 	}
-
 }

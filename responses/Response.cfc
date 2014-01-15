@@ -20,7 +20,7 @@ component accessors="true" implements="IResponse"{
 		setBody(deserializeJSON(_httpResponse.FileContent));
 		setHeaders(_httpResponse.responseHeader);
 
-		if(getStatusCode() == "200"){
+		if(getStatusCode() <= 206 && getStatusCode() >= 200){
 			setSuccess(true);
 		}
 	}

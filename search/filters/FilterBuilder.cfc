@@ -1,4 +1,4 @@
-component {
+component accessors="true" {
 	
 	property name="filters";
 	
@@ -10,6 +10,10 @@ component {
 	public function add(required any filter){
 		arrayAppend(getFilters(), arguments.filter);
 		return this;
+	}
+	
+	public IFilter function buildFilter(required string MissingMethodName, required array MissingMethodArguments){
+		return onMissingMethod(MissingMethodName, MissingMethodArguments);
 	}
 
 	public function onMissingMethod(required string MissingMethodName, required array MissingMethodArguments){
