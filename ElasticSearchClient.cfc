@@ -36,6 +36,14 @@ component accessors="true" extends="Base" {
 			index.setId(arguments.id);
 		return index;
 	}
+	
+	public MappingRequest function prepareMapping(required string index, required string type, required elasticsearch.indexing.TypeMapping typeMapping){
+		var index = new requests.MappingRequest(ClusterManager=getClusterManager());
+			index.setIndex(arguments.index);
+			index.setType(arguments.type);
+			index.setBody(typeMapping.getJson());
+		return index;
+	}
 
 	public BulkRequest function prepareBulk(boolean Transactional=false){
 		return new requests.BulkRequest(Transactional=Arguments.Transactional, ClusterManager=getClusterManager(), OutputUtils=getOutputUtils(), ElasticSearchClient=this);
@@ -51,6 +59,22 @@ component accessors="true" extends="Base" {
 		get.setType(arguments.type);
 		get.setId(arguments.id);
 		return get;
+	}
+	
+	public DeleteRequest function prepareDelete(required string index, string type="", string id=""){
+		var delete = new requests.DeleteRequest(ClusterManager=getClusterManager());
+		delete.setIndex(arguments.index);
+		delete.setType(arguments.type);
+		delete.setId(arguments.id);
+		return delete;
+	}
+	
+	public GenericRequest function prepareRequest(required string uri, required string method, required string body){
+		var genericRequest = new requests.GenericRequest(ClusterManager=getClusterManager());
+		genericRequest.setUri(arguments.uri);
+		genericRequest.setMethod(arguments.method);
+		genericRequest.setBody(arguments.body);
+		return genericRequest;
 	}
 	
 }

@@ -1,9 +1,10 @@
 component accessors="true"{
 
-	public function init(){
+	public function init(numeric from = 0, numeric size = 0){
 		for(var i IN arguments){
 			variables[i] = arguments[i];
 		}
+		
 		return this;
 	}
 

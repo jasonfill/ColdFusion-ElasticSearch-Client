@@ -3,7 +3,7 @@
 **/
 component accessors="true" extends="BaseFilter" implements="IFilter"{
 
-	property name="field";
+	property name="field" type="string";
 	property name="terms";
 	property name="execution" type="string" default="plain"; // plain, bool, and, or
 	property name="cache" type="boolean" default="true";
@@ -18,7 +18,7 @@ component accessors="true" extends="BaseFilter" implements="IFilter"{
 	public function init(string field="", 
 						 string terms=""){
 		super.init(argumentCollection=Arguments);
-		variables.terms = listToArray(Arguments.terms);
+		variables.terms = Arguments.terms;
 		return this;
 	}
 
@@ -33,9 +33,11 @@ component accessors="true" extends="BaseFilter" implements="IFilter"{
 	private string function toStringRegular(){
 		var keys = "";
 
-		if(len(trim(getFrom()))){
-			keys = listAppend(keys, '"#getField()#":#arrayToStringArray(getTerms())#');
-		}
+		if(!Len(getTerms()))
+			return "";
+			
+		keys = listAppend(keys, '"#getField()#":[#getTerms()#]');
+		
 		if(getExecution() != "plain"){
 			keys = listAppend(keys, '"execution":"#getExecution()#"');
 		}

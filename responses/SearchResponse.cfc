@@ -29,7 +29,8 @@ component extends="Response" accessors="true" {
 			setTook(getBody()["took"]);
 		}
 		if(structKeyExists(getBody(), "hits")){
-			getHits().setMaxScore(getBody().hits.max_score);
+			var maxScore = structKeyExists(getBody().hits, "max_score") ?  getBody().hits.max_score : 0;
+			getHits().setMaxScore(maxScore);
 			getHits().setTotalHits(getBody().hits.total);
 
 			for(var h=1; h<= arrayLen(getBody().hits.hits); h++){
@@ -39,6 +40,10 @@ component extends="Response" accessors="true" {
 											.setType(getBody().hits.hits[h]["_type"])
 											.setScore(getBody().hits.hits[h]["_score"])
 											.setSource(getBody().hits.hits[h]["_source"]);
+											
+				if(structKeyExists(getBody().hits.hits[h],"highlight"))
+					SearchHit.setHighlight(getBody().hits.hits[h]["highlight"])
+					
 				getHits().addHit(SearchHit);
 			}
 		}
