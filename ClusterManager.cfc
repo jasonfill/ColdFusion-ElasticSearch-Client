@@ -32,6 +32,8 @@ component accessors="true"{
 			}
 		}else if(isArray(arguments.nodeConfig)){
 			config = arguments.nodeConfig;
+		} else {
+			return this;
 		}
 
 		for(var c=1; c<=arrayLen(config); c++){
