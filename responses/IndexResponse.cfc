@@ -8,7 +8,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 	property name="Exists" type="boolean" default="true";
 	property name="ok" type="boolean" default="true";
 
-	public IndexResponse function init(){
+	public ElasticSearchMapping.responses.IndexResponse function init(){
 		return this;
 	}
 

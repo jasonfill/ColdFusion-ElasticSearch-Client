@@ -6,21 +6,21 @@ component accessors="true" extends="BaseQuery" implements="IQuery"{
 	property name="minMatch" type="numeric";
 	property name="boost" type="numeric";
 
-	public BoolQuery function init(){
+	public ElasticSearchMapping.search.queries.BoolQuery function init(){
 		variables.must = [];
 		variables.mustNot = [];
 		variables.should = [];
 		return this;
 	}
-	public BoolQuery function must(required IQuery Query){
+	public ElasticSearchMapping.search.queries.BoolQuery function must(required ElasticSearchMapping.search.queries.IQuery Query){
 		arrayAppend(variables.must,arguments.Query);
 		return this;
 	}
-	public BoolQuery function mustNot(required IQuery Query){
+	public ElasticSearchMapping.search.queries.BoolQuery function mustNot(required ElasticSearchMapping.search.queries.IQuery Query){
 		arrayAppend(variables.mustNot,arguments.Query);
 		return this;
 	}
-	public BoolQuery function should(required IQuery Query){
+	public ElasticSearchMapping.search.queries.BoolQuery function should(required ElasticSearchMapping.search.queries.IQuery Query){
 		arrayAppend(variables.should,arguments.Query);
 		return this;
 	}

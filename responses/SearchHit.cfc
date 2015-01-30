@@ -7,7 +7,7 @@ component accessors="true"{
 	property name="Source" type="struct";
 	property name="Highlight" type="struct";
 	
-	public SearchHit function init(){
+	public ElasticSearchMapping.responses.SearchHit function init(){
 		return this;
 	}
 

@@ -18,7 +18,7 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public SearchRequest function init(){
+	public ElasticSearchMapping.requests.SearchRequest function init(){
 		variables.Types = [];
 		variables.Indexes = [];
 		variables.Filters = [];
@@ -30,14 +30,14 @@ component accessors="true" {
 		return this;
 	}
 
-	public SearchRequest function setTypes(){
+	public ElasticSearchMapping.requests.SearchRequest function setTypes(){
 		for(var i IN arguments){
 			arrayAppend(variables.Types, Arguments[i]);
 		}
 		return this;
 	}
 
-	public SearchRequest function setSearchType(required string SearchType){
+	public ElasticSearchMapping.requests.SearchRequest function setSearchType(required string SearchType){
 		if(listFindNoCase(this.SEARCH_TYPES, arguments.SearchType)){
 			variables.SearchType = arguments.SearchType;
 		}else{
@@ -82,7 +82,7 @@ component accessors="true" {
 	}
 
 
-	public SearchResponse function execute(){
+	public ElasticSearchMapping.responses.SearchResponse function execute(){
 		var urlIndexes = Len(getIndexes()[1]) > 0 ? ArrayToList(getIndexes()) & "/" : "";
 		var urlTypes = Len(getTypes()[1]) > 0 ? ArrayToList(getTypes()) & "/" : "";
 		

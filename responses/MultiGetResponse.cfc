@@ -3,7 +3,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 	property name="docs" type="array";
 	property name="docsPointers" type="struct";
 	
-	public MultiGetResponse function init(){
+	public ElasticSearchMapping.responses.MultiGetResponse function init(){
 		variables.docs = [];
 		variables.docsPointers = {};
 		return this;

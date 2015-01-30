@@ -7,7 +7,7 @@ component accessors="true" {
 	property name="OutputUtils" type="OutputUtils";
 	property name="Transactional" type="boolean" default="false" getter="false" setter="false";
 
-	public BulkRequest function init(boolean Transactional=false, required ClusterManager ClusterManager, required OutputUtils OutputUtils, required ElasticSearchClient ElasticSearchClient){
+	public ElasticSearchMapping.requests.BulkRequest function init(boolean Transactional=false, required ElasticSearchMapping.ClusterManager ClusterManager, required ElasticSearchMapping.OutputUtils OutputUtils, required ElasticSearchMapping.ElasticSearchClient ElasticSearchClient){
 		variables.BulkItems = [];
 		variables.ClusterManager = arguments.ClusterManager;
 		variables.OutputUtils = arguments.OutputUtils;
@@ -20,12 +20,12 @@ component accessors="true" {
 		return variables.Transactional;
 	}
 
-	public BulkRequest function add(required IndexRequest IndexRequest){
+	public ElasticSearchMapping.requests.BulkRequest function add(required ElasticSearchMapping.requests.IndexRequest IndexRequest){
 		arrayAppend(getBulkItems(), arguments.IndexRequest);
 		return this;
 	}
 
-	public BulkResponse function execute(){
+	public ElasticSearchMapping.responses.BulkResponse function execute(){
 		var Response = "";
 		// prior to sending the bulk request, if this is transactional, let's pull up the current state of all the docs that are going to be updated...
 		if(isTransactional()){ loadPreUpdateData(); }

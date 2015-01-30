@@ -4,19 +4,19 @@ component accessors="true" {
 	property name="ClusterManager" type="ClusterManager";
 	property name="OutputUtils" type="OutputUtils";
 
-	public MultiGetRequest function init(required ClusterManager ClusterManager, required OutputUtils OutputUtils){
+	public ElasticSearchMapping.requests.MultiGetRequest function init(required ElasticSearchMapping.ClusterManager ClusterManager, required ElasticSearchMapping.OutputUtils OutputUtils){
 		variables.Items = [];
 		variables.ClusterManager = arguments.ClusterManager;
 		variables.OutputUtils = arguments.OutputUtils;
 		return this;
 	}
 
-	public MultiGetRequest function add(required string index, required string type, required string id){
+	public ElasticSearchMapping.requests.MultiGetRequest function add(required string index, required string type, required string id){
 		arrayAppend(getItems(), arguments);
 		return this;
 	}
 
-	public MultiGetResponse function execute(){
+	public ElasticSearchMapping.responses.MultiGetResponse function execute(){
 
 		var MultiGetResponse = getClusterManager().doRequest(resource = "/_mget",
 															 method="POST",

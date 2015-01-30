@@ -7,12 +7,12 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public GenericRequest function init(required ClusterManager ClusterManager){
+	public ElasticSearchMapping.requests.GenericRequest function init(required ElasticSearchMapping.ClusterManager ClusterManager){
 		variables.ClusterManager = arguments.ClusterManager
 		return this;
 	}
 
-	public Response function execute(){
+	public ElasticSearchMapping.responses.Response function execute(){
 		return getClusterManager().doRequest(resource = getUri(),
 												method=getMethod(),
 												body=getBody(),

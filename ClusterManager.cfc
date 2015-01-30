@@ -5,14 +5,14 @@ component accessors="true"{
 	property name="inactive" type="struct";
 	property name="ClusterName" type="string";
 
-	public ClusterManager function init(any nodeConfig=""){
+	public ElasticSearchMapping.ClusterManager function init(any nodeConfig=""){
 		variables.active = {};
 		variables.inactive = {};
 		loadConfigFromString(arguments.nodeConfig);
 		return this;
 	}
 
-	private ClusterManager function loadConfigFromString(required any nodeConfig){
+	private ElasticSearchMapping.ClusterManager function loadConfigFromString(required any nodeConfig){
 		/*
 			config = [{
 				host = "",
@@ -42,13 +42,13 @@ component accessors="true"{
 		return this;
 	}
 
-	public ClusterManager function addNode(required NodeConfig NodeConfig){
+	public ElasticSearchMapping.ClusterManager function addNode(required NodeConfig NodeConfig){
 		variables.active[arguments.NodeConfig.getServerId()] = arguments.NodeConfig;
 		updateServerList();
 		return this;
 	}
 
-	public ClusterManager function updateServerList(){
+	public ElasticSearchMapping.ClusterManager function updateServerList(){
 		variables.serverList = {active = structKeyList(getActive()), inactive = structKeyList(getInactive())};
 		return this;
 	}

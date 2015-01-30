@@ -2,7 +2,7 @@ component accessors="true" {
 	
 	property name="facets" type="array";
 
-	public FacetBuilder function init(){
+	public ElasticSearchMapping.search.facets.FacetBuilder function init(){
 		variables.facets = [];
 		return this;
 	}

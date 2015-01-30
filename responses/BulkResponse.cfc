@@ -3,7 +3,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 	property name="successes";
 	property name="failures";
 	
-	public BulkResponse function init(){
+	public ElasticSearchMapping.responses.BulkResponse function init(){
 		variables.successes = [];
 		variables.failures = [];
 		return this;

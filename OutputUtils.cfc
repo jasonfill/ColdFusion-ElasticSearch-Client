@@ -1,6 +1,6 @@
 component{
 
-	public OutputUtils function init(){
+	public ElasticSearchMapping.OutputUtils function init(){
 		return this;
 	}
 

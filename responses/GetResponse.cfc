@@ -7,7 +7,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 	property name="Source";
 	property name="Exists" type="boolean" default="true";
 	
-	public GetResponse function init(){
+	public ElasticSearchMapping.responses.GetResponse function init(){
 		return this;
 	}
 
