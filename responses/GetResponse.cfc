@@ -31,6 +31,7 @@ component extends="Response" accessors="true" implements="IResponse" {
 				setExists(getBody()["exists"]);
 			}
 		if(getSuccess()){
+			setExists(true); // default does not work in CF9
 			if(structKeyExists(getBody(), "_source")){
 				setSource(getBody()["_source"]);
 			}

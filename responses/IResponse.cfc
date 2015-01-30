@@ -1,3 +1,3 @@
 interface{
-	public void function handleResponse(){}
+	public void function handleResponse();
 }
