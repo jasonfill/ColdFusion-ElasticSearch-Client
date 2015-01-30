@@ -2,7 +2,7 @@ component accessors="true" {
 	
 	property name="filters";
 	
-	public FilterBuilder function init(){
+	public ElasticSearchMapping.search.filters.FilterBuilder function init(){
 		variables.filters = [];
 		return this;
 	}
@@ -12,7 +12,7 @@ component accessors="true" {
 		return this;
 	}
 	
-	public IFilter function buildFilter(required string MissingMethodName, required array MissingMethodArguments){
+	public ElasticSearchMapping.search.filters.IFilter function buildFilter(required string MissingMethodName, required array MissingMethodArguments){
 		return onMissingMethod(MissingMethodName, MissingMethodArguments);
 	}
 

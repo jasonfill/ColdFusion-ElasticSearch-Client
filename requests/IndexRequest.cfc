@@ -7,12 +7,12 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public IndexRequest function init(required ClusterManager ClusterManager){
+	public ElasticSearchMapping.requests.IndexRequest function init(required ElasticSearchMapping.ClusterManager ClusterManager){
 		variables.ClusterManager = arguments.ClusterManager
 		return this;
 	}
 
-	public IndexResponse function execute(){
+	public ElasticSearchMapping.responses.IndexResponse function execute(){
 		return getClusterManager().doRequest(resource = "/#getIndex()#/#getType()#/#getId()#",
 												method="PUT",
 												body=getBody(),

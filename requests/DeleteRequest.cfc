@@ -6,12 +6,12 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public DeleteRequest function init(required ClusterManager ClusterManager){
+	public ElasticSearchMapping.requests.DeleteRequest function init(required ElasticSearchMapping.ClusterManager ClusterManager){
 		variables.ClusterManager = arguments.ClusterManager
 		return this;
 	}
 
-	public Response function execute(){
+	public ElasticSearchMapping.responses.Response function execute(){
 		var _url = "#getIndex()#/";
 		
 		if(getType() != "")

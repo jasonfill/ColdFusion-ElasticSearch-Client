@@ -9,7 +9,7 @@ component extends="Response" accessors="true" {
 	property name="TotalShards";
 	property name="FailedShards";
 
-	public SearchResponse function init(){
+	public ElasticSearchMapping.responses.SearchResponse function init(){
 		setHits(new SearchHits());
 		return this;
 	}

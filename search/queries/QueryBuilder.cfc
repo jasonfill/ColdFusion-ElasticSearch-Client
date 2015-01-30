@@ -2,7 +2,7 @@ component accessors="true" {
 	
 	property name="queries";
 
-	public QueryBuilder function init(){
+	public ElasticSearchMapping.search.queries.QueryBuilder function init(){
 		variables.queries = [];
 		return this;
 	}

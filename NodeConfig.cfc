@@ -8,7 +8,7 @@ component accessors="true" {
 	property name="password" type="string";
 	property name="health" type="string" default="ok";
 
-	public NodeConfig function init(string host="", numeric port=0, string path="", boolean secure=false, string username="", string password=""){
+	public ElasticSearchMapping.NodeConfig function init(string host="", numeric port=0, string path="", boolean secure=false, string username="", string password=""){
 		variables.host = arguments.host;
 		variables.port = arguments.port;
 		variables.path = arguments.path;

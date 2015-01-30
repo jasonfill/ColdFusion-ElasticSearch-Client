@@ -11,12 +11,12 @@ component accessors="true" {
 
 	property name="ClusterManager" type="ClusterManager";
 
-	public GetRequest function init(required ClusterManager ClusterManager){
-		variables.ClusterManager = arguments.ClusterManager
+	public ElasticSearchMapping.requests.GetRequest function init(required ElasticSearchMapping.ClusterManager ClusterManager){
+		variables.ClusterManager = arguments.ClusterManager;
 		return this;
 	}
 
-	public GetResponse function execute(){
+	public ElasticSearchMapping.responses.GetResponse function execute(){
 		var _url = "/#getIndex()#/#getType()#/#getId()#";
 
 		if(getSourceOnly()){

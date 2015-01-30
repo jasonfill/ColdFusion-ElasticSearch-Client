@@ -8,7 +8,7 @@ component accessors="true" extends="BaseQuery" implements="IQuery"{
 	property name="scoreMode" type="string" default="avg"; // valid options avg, total, max, none
 
 	public function init(string path="", 
-						 IQuery query=""){
+						 ElasticSearchMapping.search.queries.IQuery query=""){
 		super.init(argumentCollection=Arguments);
 		return this;
 	}

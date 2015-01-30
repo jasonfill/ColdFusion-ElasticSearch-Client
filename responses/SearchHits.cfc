@@ -4,12 +4,12 @@ component accessors="true" {
 	property name="TotalHits" type="numeric";
 	property name="Hits" type="array";
 	
-	public SearchHits function init(){
+	public ElasticSearchMapping.responses.SearchHits function init(){
 		variables.Hits = [];
 		return this;
 	}
 
-	public SearchHit function getAt(required numeric position){
+	public ElasticSearchMapping.responses.SearchHit function getAt(required numeric position){
 		if(arrayLen(getHits()) <= arguments.position){
 			return variables.Hits[arguments.position];
 		}else{
@@ -17,7 +17,7 @@ component accessors="true" {
 		}
 	}
 
-	public void function addHit(required SearchHit SearchHit){
+	public void function addHit(required ElasticSearchMapping.responses.SearchHit SearchHit){
 		arrayAppend(getHits(), arguments.SearchHit);
 	}
 }
